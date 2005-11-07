@@ -94,7 +94,14 @@ function(data, classLab, proc, xvalMethod="LOO", group, indFun, niter, fsFun=NUL
 		return(out)
 	}
 })
-		
+
+setMethod("xval", c("exprSet", "character", "genericFunction", "character", "missing", "ANY", "ANY", "ANY",
+  "ANY", "ANY", "ANY" ),
+function(data, classLab, proc, xvalMethod="LOO", group=0:0, indFun, niter, fsFun=NULL, fsNum=10, decreasing=TRUE, ...) 
+{
+    xval(data, classLab, proc, xvalMethod="LOO", group=0:0)
+})
+
 
 balKfold <- function(K) function( data, clab, iternum ) {
  clabs <- data[[clab]]
