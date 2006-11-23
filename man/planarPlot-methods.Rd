@@ -38,7 +38,7 @@ featureNames(gg) <- sym
 class <- as.character(all2$mol.biol)
 gg@phenoData@data$class <- factor(class)
 gg@phenoData@varMetadata = rbind(gg@phenoData@varMetadata,class="class" )
-newpd = new("phenoData", pData=pData(gg), varLabels=varMetadata(gg)[,1])
+newpd = new("phenoData", pData=pData(gg), varLabels=as.list(varMetadata(gg)[, 1]))
 gg = new("ExpressionSet", exprs=exprs(gg), phenoData=newpd)
 cl1 <- which( class == "NEG" )
 cl2 <- which( class != "NEG" )
