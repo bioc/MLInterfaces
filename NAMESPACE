@@ -37,7 +37,8 @@ export(tellMLearnMethods,
 	balKfold, xvalSpec, getVarImp, balKfold.xvspec, rdacvI, rdacvML,
 	rdaI, rdaML,
         plotXvalRDA, makeLearnerSchema, standardMLIConverter, sldaI, Kfold,
-        fs.absT, fs.probT, ksvmI, knn.cvI, knn.cv2, adaI )
+        fs.absT, fs.probT, ksvmI, knn.cvI, knn.cv2, adaI,
+        fs.topVariance )
 
 S3method("print", "rdacvML")
 S3method("print", "rdaML")
