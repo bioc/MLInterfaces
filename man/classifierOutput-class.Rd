@@ -62,6 +62,12 @@ of 'digging out' the predicted probabilities associated with each
 cross-validation iteration executed through an xvalSpec specification. }
     \item{\code{call}:}{Object of class \code{"call"} -- records the
 call used to generate the classifierOutput RObject }
+    \item{\code{embeddedCV}:}{logical indicating whether the learning
+engine has cross-validation embedded within}
+    \item{\code{fsHistory}:}{list of feature names included in the
+feature selection process iterations}
+    \item{\code{learnerSchema}:}{audit of what was used to 
+schematize the learning process for this run}
   }
 }
 \section{Methods}{
