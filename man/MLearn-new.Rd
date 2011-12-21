@@ -237,8 +237,10 @@ confuMat(blb.1)
 #
 # ExpressionSet illustration
 # 
+#  12/20/2012 -- increased training set size to avoid new randomForest
+#  error when empty classes emerge
 data(sample.ExpressionSet)
-X = MLearn(type~., sample.ExpressionSet[100:250,], randomForestI, 1:16, importance=TRUE )
+X = MLearn(type~., sample.ExpressionSet[100:250,], randomForestI, 1:19, importance=TRUE )
 library(randomForest)
 library(hgu95av2.db)
 opar = par(no.readonly=TRUE)
