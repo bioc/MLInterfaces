@@ -58,6 +58,7 @@
 }
 
 \examples{
+set.seed(1234)
 data(sample.ExpressionSet)
 trainInd <- 1:16
 
