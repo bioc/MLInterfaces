@@ -90,6 +90,8 @@ xvalSpec <- function(type,
                      niter = 0,
                      partitionFunc = function(data, classLab,iternum){ (1:nrow(data))[-iternum] },
                      fsFun = function(formula, data) formula ) {
+# added 24 May 2012 relative to G Bayon observation on NOTEST misbehavior
+  if (type=="NOTEST") partitionFunc = function(data, classLab, iternum) 1:nrow(data)
   new("xvalSpec", type=type, niter=niter, partitionFunc=partitionFunc, fsFun=fsFun)
 }
 

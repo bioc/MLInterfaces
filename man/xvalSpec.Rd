@@ -16,7 +16,10 @@ xvalSpec( type, niter=0, partitionFunc=function(data, classLab, iternum ) {
   \item{type}{a string, "LOO" indicating leave-one-out
 cross-validation, or "LOG" indicating leave-out-group, or
 "NOTEST", indicating the entire dataset is used in a single
-training run.}
+training run.  As of 24 May 2012 \code{"NOTEST"} is anticipated
+for use only with \code{\link{randomForestI}} or \code{\link{rdacvI}},
+attempts to use \code{xvalSpec("NOTEST")} with other learner schemas
+will result in a warning and perhaps fatal errors in MLearn execution.}
 
   \item{niter}{numeric specification of the number of
 cross-validation iterations to use.  Ignored if \code{type}
@@ -55,7 +58,10 @@ when a \code{xvalSpec} is used.
 }
 %\references{  }
 \author{Vince Carey <stvjc@channing.harvard.edu>}
-%\note{  }
+\note{If it is desired to avoid a train/test decomposition of data
+with a learner that is not random forest or rda.cv, a private
+learner schema converter may be used.  See the vignette for
+more information.}
 
 
 %\seealso{  }

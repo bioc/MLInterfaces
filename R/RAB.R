@@ -120,6 +120,6 @@ RAB4es = function (respn, eset, val, maxit=10, maxdepth=4)
     tmp = tonp(eset[[respn]], val)
     ee = data.frame(ee, tmp)
     names(ee)[ncol(ee)] = respn
-    RAB(ff, data=ee, maxit=maxit, maxdepth=maxdepth)
+    RAB(ff, data=ee, maxiter=maxit, maxdepth=maxdepth)
 }
 

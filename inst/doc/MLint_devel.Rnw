@@ -265,6 +265,51 @@ The xvalSpec class allows us to specify types of cross-validation, and to
 control carefully how partitions are formed.  More details are provided
 in the MLprac2\_2 vignette.
 
+\section{Supporting the NOTEST type more broadly}
+
+Consider the aim of using MLInterfaces to apply SVM to
+a complete dataset without decomposition into test and training sets.
+It is natural to consider using xvalSpec("NOTEST"), or supplying
+the full vector of sample indices for the input data, but this
+can cause problems, at least with svmI, as we have
+
+\begin{verbatim}
+> svmI@converter
+function (obj, data, trainInd) 
+{
+    teData = data[-trainInd, ]
+    trData = data[trainInd, ]
+    tepr = predict(obj, teData, decision.values = TRUE, probability = TRUE)
+    trpr = predict(obj, trData, decision.values = TRUE, probability = TRUE)
+    new("classifierOutput", testPredictions = factor(tepr[1:length(tepr)]), 
+        trainPredictions = factor(trpr[1:length(trpr)]), testScores = attr(tepr, 
+            "probabilities"), trainScores = attr(trpr, "probabilities"), 
+        RObject = obj)
+}
+<environment: namespace:MLInterfaces>
+\end{verbatim}
+
+To proceed without generating problems, create a modified learnerSchema
+interface.
+<<domo>>=
+svmI2 = svmI
+svmI2@converter = function(obj, data, trainInd) {
+    trData = data[trainInd, ]
+    teData = trData # resubstitution
+    tepr = predict(obj, teData, decision.values = TRUE, probability = TRUE)
+    trpr = predict(obj, trData, decision.values = TRUE, probability = TRUE)
+    new("classifierOutput", testPredictions = factor(tepr[1:length(tepr)]), 
+        trainPredictions = factor(trpr[1:length(trpr)]), testScores = attr(tepr, 
+            "probabilities"), trainScores = attr(trpr, "probabilities"), 
+        RObject = obj)
+}
+@
+
+You can now use svmI2 in place of svmI and avoid the errors
+engendered by a vacuous index set for the test set, but a warning
+will be thrown.
+
+
 \section{The MLearn approach to clustering and other forms
 of unsupervised learning}
 

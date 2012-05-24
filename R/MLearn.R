@@ -8,25 +8,30 @@ setMethod("MLearn", c("formula", "data.frame", "learnerSchema",
 ## create the requested function
   lfun = do.call("::", list(pname, fname))
 ## build test and train subsets
+ .nothing_left_to_test_ = FALSE  # to deal with G Bayon concern of 24 May 2012
  if (length(trainInd) != nrow(data))
-  tedata = gdata::drop.levels(data[-trainInd,])
+  tedata = gdata::drop.levels(data[-trainInd,]) else {
+     .nothing_left_to_test_ = TRUE
+  }
   trdata = gdata::drop.levels(data[trainInd,])
 ## execute on training data 
   ans = lfun( formula, trdata, ...)
 ## collect response subsets
   trFrame = try(model.frame(formula, trdata, na.action=na.fail))
   if (inherits(trFrame, "try-error")) stop("NA encountered in data.  Please rectify.")
-  teFrame = try(model.frame(formula, tedata, na.action=na.fail))
-  if (inherits(teFrame, "try-error")) stop("NA encountered in data.  Please rectify.")
+  if (!.nothing_left_to_test_) {
+   teFrame = try(model.frame(formula, tedata, na.action=na.fail))
+   if (inherits(teFrame, "try-error")) stop("NA encountered in data.  Please rectify.")
+   teout = model.response( teFrame )
+  }
   trout = model.response( trFrame )
-  teout = model.response( teFrame )
 ## tell what was done
   thecall = match.call()
 ## convert the execute result into an MLint output container
   tmp = .method@converter( ans, data, trainInd )
 ## add some stuff to the converted representation
   if (!tmp@embeddedCV) {
-      tmp@testOutcomes = teout
+      if (!.nothing_left_to_test_) tmp@testOutcomes = teout
       tmp@trainOutcomes = trout
   }
   else tmp@testOutcomes = trout # if CV is embedded, the 'training' is 'test'
@@ -117,9 +122,17 @@ setMethod("MLearn", c("formula", "ExpressionSet", "learnerSchema", "numeric" ),
 # it is an open question whether we should try to keep all the RObjects generated through
 # the sequence of cross-validations.  i think we can as long as we are not in LOO
 
+.check_NOTEST_COMPATIBILITY = function( lschema, xvspec ) {
+   algname = lschema@mlFunName
+   if (xvspec@type == "NOTEST" & !(algname %in% c("randomForest", "rdacvML")))
+     warning("xvalSpec('NOTEST') only supported for randomForestI and rdacvI -- \n you may need a private converter; see vignette")
+   return(NULL)
+}
+
 setMethod("MLearn",
           c("formula", "data.frame", "learnerSchema", "xvalSpec" ),
           function( formula, data, .method, trainInd, ...) {
+    .check_NOTEST_COMPATIBILITY( .method, trainInd )
             xvspec = trainInd # rationalize parameter name
             xvalMethod = xvspec@type
             if (!(xvspec@type %in% c("LOO", "LOG", "NOTEST")))
@@ -232,6 +245,7 @@ setMethod("MLearn",
 setMethod("MLearn",
           c("formula", "ExpressionSet", "learnerSchema", "xvalSpec" ),
           function( formula, data, .method, trainInd, ...) {
+    .check_NOTEST_COMPATIBILITY( .method, trainInd )
             thecall = match.call()
             data = es2df(data, keep=as.character(as.list(formula)[[2]]))
             ans = MLearn(formula, data, .method, trainInd, ...)
