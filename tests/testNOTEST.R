@@ -4,6 +4,8 @@ library(MLInterfaces)
     rf1 = try(MLearn(sp~CW+RW, data=crabs, randomForestI, xvalSpec("NOTEST"), ntree=600 ))
     if (inherits(rf1, "try-error")) stop("xvalSpec('NOTEST') not working as intended with randomForestI")
 
+    rf2 = try(MLearn(sp~CW+RW, data=crabs, randomForestI, 1:nrow(crabs), ntree=600 ))
+    if (inherits(rf2, "try-error")) stop("xvalSpec('NOTEST') not working as intended with randomForestI")
 
 library(ALL)
 data(ALL)
