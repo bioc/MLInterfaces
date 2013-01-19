@@ -78,7 +78,7 @@ setMethod("precision",
     stop("precision and recall do not match.")
   ## p <- mean(p)
   ## r <- mean(r)
-  mean((2*p*r)/(p+r))
+  mean((2*p*r)/(p+r), na.rm=TRUE)
 }
 
 setMethod("macroF1",
