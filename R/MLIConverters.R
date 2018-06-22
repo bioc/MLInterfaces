@@ -63,7 +63,6 @@ MLIConverterListEl.class = function(obj, data, trainInd) {
    }
 
 MLIConverter.svm = function(obj, data, trainInd) { # decision.values parm needed
-    browser()
   teData = data[-trainInd,]
   trData = data[trainInd,]
   ##tepr = predict(obj, teData, decision.values=FALSE)
