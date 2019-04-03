@@ -36,10 +36,14 @@ all2 <- ALL[,kp]
 #
 set.seed(1234)
 ng <- nrow(exprs(all2))
-pick <- sample(1:ng, size=2, replace=FALSE)
+pick <- sample(seq_len(ng), size=5, replace=FALSE)
 gg <- all2[pick,]
 sym <- unlist(mget(featureNames(gg), hgu95av2SYMBOL))
-featureNames(gg) <- sym
+bad = which(is.na(sym))
+ok = seq_len(2)
+if (length(bad)>0) ok = ((seq_len(5))[-bad])[seq_len(2)]
+gg = gg[ok,]
+featureNames(gg) <- sym[ok]
 gg$class = factor(ifelse(all2$mol.biol=="NEG", "NEG", "POS"))
 
 cl1 <- which( gg$class == "NEG" )
