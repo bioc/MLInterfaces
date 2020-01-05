@@ -1,3 +1,7 @@
+CHANGES IN VERSION 1.66.1
+-------------------------
+ o remove requirement for rda in release branch
+
 CHANGES IN VERSION 1.59.2
 -------------------------
  o Fix warning stemming from base::seq_len in
