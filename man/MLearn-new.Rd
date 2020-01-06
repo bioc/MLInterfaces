@@ -299,11 +299,12 @@ kp = which(mads>1)  # get around 250 genes
 vall2 = all2[kp, ]
 vall2$mol.biol = factor(vall2$mol.biol) # drop unused levels
 
-if (requireNamespace("rda", quietly=TRUE) {
- r1 = MLearn(mol.biol~., vall2, rdacvI, 1:40)
+if (requireNamespace("rda", quietly=TRUE)) {
+ library("rda")
+ r1 = MLearn(mol.biol~., vall2, MLInterfaces:::rdacvI, 1:40)
  confuMat(r1)
  RObject(r1)
- plotXvalRDA(r1)  # special interface to plots of parameter space
+ MLInterfaces:::plotXvalRDA(r1)  # special interface to plots of parameter space
 }
 
 # illustrate clustering support

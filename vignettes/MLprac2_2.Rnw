@@ -669,6 +669,7 @@ key parameters are chosen by native cross-validation (in rda.cv)
 and then applied once to get the final object.
 <<lkrda,results=hide,cache=TRUE>>=
 if (requireNamespace("rda", quietly=TRUE)) {
+library("rda")
 set.seed(1234)
 rdaALL = MLearn( mol.biol~., fusk, rdacvI, 1:40 )
 rdaALL
