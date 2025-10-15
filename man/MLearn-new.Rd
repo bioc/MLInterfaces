@@ -58,7 +58,7 @@ makeLearnerSchema(packname, mlfunname, converter, predicter)
 }
 \arguments{
   \item{formula}{ standard model formula }
-  \item{data}{ data.frame or ExpressionSet instance}
+  \item{data}{ data.frame or ExpressionSet or SummarizedExperiment instance}
   \item{.method}{ instance of learnerSchema }
   \item{trainInd}{ obligatory numeric vector of indices of data to be used for training;
 all other data are used for testing, or instance of the xvalSpec class }
